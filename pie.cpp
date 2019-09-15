@@ -27,6 +27,11 @@ using namespace std;
 
 int main(){
 
+   cout.setf(ios::fixed);
+   cout.setf(ios::showpoint);
+   cout.precision(10);
+   cout << "True value of pie (M_PI) is " << M_PI << endl;
+
    int nthreads;
    int taskid;
    int numtasks;
@@ -52,7 +57,7 @@ int main(){
 
    bool DEBUG = false;
    unsigned long int seed = 123457;
-   const unsigned long int NTRIALS = 100L*1000000L;
+   const unsigned long int NTRIALS = 10L*1000000L;
 
    const double xyval = 1.0/sqrt(2.0);
    const double xwidth = 1.0 - xyval; 
@@ -111,11 +116,8 @@ int main(){
       double varn = double(NTRIALS)*p*(1.0-p);
       double errp = sqrt(varn)/double(NTRIALS);
       double errpie = 4.0*(f3+f4)*errp;
-      double PIE = 4.0*atan(1.0);
+      double PIE = M_PI;
 
-      cout.setf(ios::fixed);
-      cout.setf(ios::showpoint);
-      cout.precision(10);
       cout << " " << endl;
       cout << "Estimate of pi = " << pie_estimate;
       cout << " +- " << errpie << " (" 
