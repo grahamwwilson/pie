@@ -9,7 +9,7 @@ CXX = g++
 # -Wall     turns on most, but not all warnings
 # -O1       Optimization level 1
 # -fopenmp  Compile with OpenMP for shared memory parallel  
-CXXFLAGS = -Wall -O1 -fopenmp
+CXXFLAGS = -O1 -fopenmp
 
 # the build target executable
 TARGET = pie
