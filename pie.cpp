@@ -13,6 +13,8 @@
 #include <random>
 #include <iomanip>
 #include <math.h>
+#include <exception>
+#include <stdlib.h> //strtoul
 #ifdef _OPENMP
    #include <omp.h>
    #define OMP_VERSION _OPENMP
@@ -25,7 +27,27 @@ typedef std::mt19937 RandomNumberGenerator;
 //typedef std::ranlux24 RandomNumberGenerator;
 using namespace std;
 
-int main(){
+int main( int argc, char *argv[] ){
+
+   unsigned long int seed;
+
+// Set default value
+   seed = 654321L;
+
+   if ( argc != 2 ){ // argc should be 2 for correct execution
+     // We print argv[0] assuming it is the program name
+     cout << "Expecting argc = 2, but argc = " << argc << endl;
+     cout << "Usage: " << argv[0] << " <seed> " << endl;
+//     throw std::exception();
+     cout << "Will use default seed " << seed << endl;
+   }
+   else {
+     cout << "Found argc = 2 as expected" << std::endl;
+     cout << "argv[0]: " << argv[0] << " argv[1]: " << argv[1] << endl;
+     seed = strtoul(argv[1], NULL, 10); 
+   }
+
+   cout << "Base seed set to " << seed << endl;
 
    cout.setf(ios::fixed);
    cout.setf(ios::showpoint);
@@ -56,7 +78,6 @@ int main(){
 // and for good measure do export OMP_DISPLAY_ENV="TRUE"
 
    bool DEBUG = false;
-   unsigned long int seed = 123457;
    const unsigned long int NTRIALS = 10L*1000000L;
 
    const double xyval = 1.0/sqrt(2.0);
@@ -74,7 +95,8 @@ int main(){
       numtasks = omp_get_num_threads();
       Npertask = NTRIALS/numtasks;
       taskid = omp_get_thread_num();
-      RandomNumberGenerator g(seed+taskid);
+      unsigned long int myseed = seed + taskid;
+      RandomNumberGenerator g(myseed);
       std::uniform_real_distribution<double> u;
 
       double x,y,rsq;
@@ -91,7 +113,8 @@ int main(){
       {
           nthreads = omp_get_num_threads();
           cout << "taskid " << setw(3) << taskid << " [" << nthreads 
-               << "] " << " nhits = " << nhits << endl;
+               << "] " << " with seed " << setw(6) << myseed 
+               << " : nhits = " << nhits << endl;
       } 
    }
    #pragma omp barrier
