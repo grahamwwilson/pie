@@ -78,7 +78,9 @@ int main( int argc, char *argv[] ){
 // and for good measure do export OMP_DISPLAY_ENV="TRUE"
 
    bool DEBUG = false;
-   const unsigned long int NTRIALS = 10L*1000000L;
+// 1 Billion trials   
+   const unsigned long int NTRIALS = 36L*10000000L;   
+//   const unsigned long int NTRIALS = 10000L*1000000L;
 
    const double xyval = 1.0/sqrt(2.0);
    const double xwidth = 1.0 - xyval; 
@@ -145,6 +147,7 @@ int main( int argc, char *argv[] ){
       cout << "Estimate of pi = " << pie_estimate;
       cout << " +- " << errpie << " (" 
            << scientific << errpie/PIE << ")" << endl;
+      cout << "Fractional uncertainty (%) = " << 100.0*errpie/PIE << endl;
       cout << " " << endl;
       cout << "True value PIE = " << PIE << endl;
       cout << "Actual deviation in pi: " 
